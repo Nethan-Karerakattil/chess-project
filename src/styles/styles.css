@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #C4A484;
+}
+
+board {
+    width: 90vh;
+    height: 90vh;
+    border-style: solid;
+    font-size: 0;
+}
+
+tile {
+    width: 11.25vh;
+    height: 11.25vh;
+    display: inline-block;
+}
+
+.dark-tile {
+    background-color: #4c3228;
+}
+
+.light-tile {
+    background-color:  #765341;
+}
