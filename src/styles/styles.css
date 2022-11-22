@@ -19,6 +19,14 @@ tile {
     width: 11.25vh;
     height: 11.25vh;
     display: inline-block;
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 55%;
+}
+
+tile:hover{
+    opacity: 0.5;
 }
 
 .dark-tile {
@@ -27,4 +35,12 @@ tile {
 
 .light-tile {
     background-color:  #765341;
+}
+
+.tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
 }
