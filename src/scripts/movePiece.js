@@ -110,6 +110,27 @@ function calcLegalMoves(piece, coordinates) {
             drawLine("x", "y - i", "black");
         break;
 
+        case "black-horse":
+            addLegalSpot(x - 1, y - 2, "white");
+            addLegalSpot(x + 1, y - 2, "white");
+            addLegalSpot(x + 2, y - 1, "white");
+            addLegalSpot(x + 2, y + 1, "white");
+            addLegalSpot(x + 1, y + 2, "white");
+            addLegalSpot(x - 1, y + 2, "white");
+            addLegalSpot(x - 2, y + 1, "white");
+            addLegalSpot(x - 2, y - 1, "white");
+        break;
+
+        case "white-horse":
+            addLegalSpot(x - 1, y - 2, "black");
+            addLegalSpot(x + 1, y - 2, "black");
+            addLegalSpot(x + 2, y - 1, "black");
+            addLegalSpot(x + 2, y + 1, "black");
+            addLegalSpot(x + 1, y + 2, "black");
+            addLegalSpot(x - 1, y + 2, "black");
+            addLegalSpot(x - 2, y + 1, "black");
+            addLegalSpot(x - 2, y - 1, "black");
+        break;
     }
 
     function drawLine(xVal, yVal, oppositeColor){
