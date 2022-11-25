@@ -131,6 +131,15 @@ function calcLegalMoves(piece, coordinates) {
             addLegalSpot(x - 2, y + 1, "black");
             addLegalSpot(x - 2, y - 1, "black");
         break;
+
+        case "black-pawn":
+            addLegalSpot(x - 1, y, "white");
+            if(x == 7) addLegalSpot(x - 2, y, "white");
+        break;
+
+        case "white-pawn":
+            addLegalSpot(x + 1, y, "white");
+            if(x == 2) addLegalSpot(x + 2, y, "white");
     }
 
     function drawLine(xVal, yVal, oppositeColor){
