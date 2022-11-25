@@ -81,6 +81,20 @@ function calcLegalMoves(piece, coordinates) {
             drawLine("x", "y + i", "black");
             drawLine("x", "y - i", "black");
         break;
+
+        case "black-bishop":
+            drawLine("x + i", "y - i", "white");
+            drawLine("x - i", "y + i", "white");
+            drawLine("x - i", "y - i", "white");
+            drawLine("x + i", "y + i", "white");
+        break;
+        
+        case "white-bishop":
+            drawLine("x + i", "y - i", "black");
+            drawLine("x - i", "y + i", "black");
+            drawLine("x - i", "y - i", "black");
+            drawLine("x + i", "y + i", "black");
+        break;
     }
 
     function drawLine(xVal, yVal, oppositeColor){
