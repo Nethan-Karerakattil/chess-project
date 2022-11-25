@@ -11,18 +11,15 @@ document.querySelectorAll("tile").forEach(element =>
             return prevTile = e.currentTarget;
         }
 
+        //This line is very important. DONT delete
         // if(legalSpots.length == 0) return;
+
+        if(e.currentTarget === prevTile) return removeAllDots();
 
         const classes = e.currentTarget.className.split(" ");
         const prevClasses = prevTile.className.split(" ");
 
         if(legalSpots.length != 0 && !legalSpots.includes(classes[0])) return;
-
-        //Remove all dots
-        const dots = document.querySelectorAll(".dot, .danger-dot");
-        for (let i = dots.length - 1; i >= 0; i--) {
-            dots[i].parentNode.removeChild(dots[i]);
-        }
 
         //Remove piece from first tile
         prevTile.style.removeProperty("background-image");
@@ -35,17 +32,10 @@ document.querySelectorAll("tile").forEach(element =>
         //Add piece on first tile to second tile
         addPiece(classes[0], prevClasses[2].slice(0, 5), prevClasses[2].slice(6, 15));
 
-        prevTile = undefined;
-        legalSpots = [];
+        //Remove all dots
+        removeAllDots();
     })
 )
-
-function addPiece(pos, color, piece) {
-    const target = document.getElementsByClassName(pos)[0];
-
-    target.style.backgroundImage = "url('./images/" + color + "-pieces/" + piece + ".png')";
-    target.classList.add(color + "-" + piece);
-}
 
 function calcLegalMoves(piece, coordinates) {
     const x = Number(coordinates.slice(0, 1));
@@ -54,35 +44,92 @@ function calcLegalMoves(piece, coordinates) {
     switch (piece) {
         case "black-king":
             for (let i = -1; i <= 1; i++) {
-                addLegalSpot((x + i).toString(), (y - 1).toString(), "black", "white");
-                addLegalSpot((x + i).toString(), (y + 1).toString(), "black", "white");
+                addLegalSpot(x + i, y - 1, "white");
+                addLegalSpot(x + i, y + 1, "white");
             }
-            addLegalSpot((x - 1).toString(), y.toString(), "black", "white");
-            addLegalSpot((x + 1).toString(), y.toString(), "black", "white");
+            addLegalSpot(x - 1, y, "white");
+            addLegalSpot(x + 1, y, "white");
         break;
 
         case "white-king":
             for (let i = -1; i <= 1; i++) {
-                addLegalSpot((x + i).toString(), (y - 1).toString(), "white", "black");
-                addLegalSpot((x + i).toString(), (y + 1).toString(), "white", "black");
+                addLegalSpot(x + i, y - 1, "black");
+                addLegalSpot(x + i, y + 1, "black");
             }
-            addLegalSpot((x - 1).toString(), y.toString(), "white", "black");
-            addLegalSpot((x + 1).toString(), y.toString(), "white", "black");
+            addLegalSpot(x - 1, y, "black");
+            addLegalSpot(x + 1, y, "black");
+        break;
+
+        case "black-queen":
+            drawLine("x + i", "y - i", "white");
+            drawLine("x - i", "y + i", "white");
+            drawLine("x - i", "y - i", "white");
+            drawLine("x + i", "y + i", "white");
+            drawLine("x + i", "y", "white");
+            drawLine("x - i", "y", "white");
+            drawLine("x", "y + i", "white");
+            drawLine("x", "y - i", "white");
+        break;
+        
+        case "white-queen":
+            drawLine("x + i", "y - i", "black");
+            drawLine("x - i", "y + i", "black");
+            drawLine("x - i", "y - i", "black");
+            drawLine("x + i", "y + i", "black");
+            drawLine("x + i", "y", "black");
+            drawLine("x - i", "y", "black");
+            drawLine("x", "y + i", "black");
+            drawLine("x", "y - i", "black");
         break;
     }
 
-    function addLegalSpot(xPos, yPos, teamColor, enemyColor) {
+    function drawLine(xVal, yVal, oppositeColor){
+        for(let i = 1; i <= 8; i++){
+            const addSpot = addLegalSpot(eval(xVal), eval(yVal), oppositeColor);
+
+            if(addSpot === "enemy") return;
+            if(addSpot === "team") return;
+        }
+    }
+
+    function addLegalSpot(xPos, yPos, enemyColor) {
+        xPos = xPos.toString();
+        yPos = yPos.toString();
+
         const element = document.getElementsByClassName(xPos + yPos)[0];
         if(!element) return;
 
+        const teamColor = piece.split("-")[0];
         const pieceAtPos = element.className.split(" ")[2]?.slice(0, 5);
         const dot = document.createElement("div");
 
-        if(pieceAtPos === teamColor) return;
-        if(pieceAtPos === enemyColor) dot.classList.add("danger-dot");
-        else dot.classList.add("dot");
+        if(pieceAtPos === teamColor) return "team";
+        if(pieceAtPos === enemyColor){
+            dot.classList.add("danger-dot")
+            element.appendChild(dot);
+            legalSpots.push(xPos + yPos);
+            return "enemy";
+        }
+        dot.classList.add("dot");
 
         element.appendChild(dot);
         legalSpots.push(xPos + yPos);
     }
-}   
+}
+
+function addPiece(pos, color, piece){
+    const target = document.getElementsByClassName(pos)[0];
+
+    target.style.backgroundImage = "url('./images/" + color + "-pieces/" + piece + ".png')";
+    target.classList.add(color + "-" + piece);
+}
+
+function removeAllDots(){
+    const dots = document.querySelectorAll(".dot, .danger-dot");
+    for (let i = dots.length - 1; i >= 0; i--) {
+        dots[i].parentNode.removeChild(dots[i]);
+    }
+
+    prevTile = undefined;
+    legalSpots = [];
+}
