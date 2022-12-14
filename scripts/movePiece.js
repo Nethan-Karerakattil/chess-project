@@ -11,8 +11,7 @@ document.querySelectorAll("tile").forEach(element =>
             return prevTile = e.currentTarget;
         }
 
-        //This line is very important. DONT delete
-        // if(legalSpots.length == 0) return;
+        if(legalSpots.length == 0) return;
 
         if(e.currentTarget === prevTile) return removeAllDots();
 
