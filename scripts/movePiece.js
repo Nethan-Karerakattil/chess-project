@@ -132,13 +132,57 @@ function calcLegalMoves(piece, coordinates) {
         break;
 
         case "black-pawn":
-            addLegalSpot(x - 1, y, "white");
-            if(x == 7) addLegalSpot(x - 2, y, "white");
+            const center = document.getElementsByClassName((x - 1).toString() + y.toString())[0]
+            const right = document.getElementsByClassName((x - 1).toString() + (y - 1).toString())[0]
+            const left = document.getElementsByClassName((x - 1).toString() + (y + 1).toString())[0]
+
+            let numOfPieces = 0;
+
+            if(right.className.split(" ")[2]){
+                addLegalSpot(x - 1, y - 1, "white");
+            }
+            else {
+                numOfPieces++;
+            }
+
+            if(left.className.split(" ")[2]){
+                addLegalSpot(x - 1, y + 1, "white");
+            }
+            else {
+                numOfPieces++;
+            }
+
+            if(numOfPieces == 2 && !center.className.split(" ")[2]){
+                addLegalSpot(x - 1, y, "white");
+                if(x == 7) addLegalSpot(x - 2, y, "white");
+            }
         break;
 
         case "white-pawn":
-            addLegalSpot(x + 1, y, "white");
-            if(x == 2) addLegalSpot(x + 2, y, "white");
+            const centerWhite = document.getElementsByClassName((x + 1).toString() + y.toString())[0]
+            const rightWhite = document.getElementsByClassName((x + 1).toString() + (y + 1).toString())[0]
+            const leftWhite = document.getElementsByClassName((x + 1).toString() + (y - 1).toString())[0]
+
+            let pieces = 0;
+
+            if(rightWhite.className.split(" ")[2]){
+                addLegalSpot(x + 1, y + 1, "black");
+            }
+            else {
+                pieces++;
+            }
+
+            if(leftWhite.className.split(" ")[2]){
+                addLegalSpot(x + 1, y - 1, "black");
+            }
+            else {
+                pieces++;
+            }
+
+            if(pieces == 2 && !centerWhite.className.split(" ")[2]){
+                addLegalSpot(x + 1, y, "black");
+                if(x == 2) addLegalSpot(x + 2, y, "black");
+            }
     }
 
     function drawLine(xVal, yVal, oppositeColor){
